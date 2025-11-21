@@ -123,7 +123,14 @@ class AdsInsights(FBMarketingIncrementalStream):
             else:
                 breakdowns_pks.append(breakdown)
 
-        return ["date_start", "account_id", "ad_id"] + breakdowns_pks
+        level_pk_map = {
+            "ad": "ad_id",
+            "ad_set": "adset_id",
+            "campaign": "campaign_id",
+            "account": "account_id",
+        }
+
+        return ["date_start", "account_id"] + [level_pk_map.get(self.level, "ad_id")] + breakdowns_pks
 
     @property
     def insights_lookback_period(self):
